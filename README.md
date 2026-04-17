@@ -121,26 +121,32 @@ The dashboard relies on a combination of data retrieval, processing, and visuali
 
 ---
 
-## Running the Application
+## Project Structure
 
-
-### Run Locally
-
-Install dependencies:
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Run the app:
-
-```bash
-python app.py
-```
-
-
-Open in browser :
-
-http://localhost:8050
+f1-dashboard/
+│
+├── app.py                  # Main Dash application
+├── requirements.txt        # Python dependencies
+├── Dockerfile              # Docker configuration
+├── README.md           
+│
+├── assets/                 # Static files (CSS, images)
+│   ├── dashboard.css
+│   └── logos/
+│
+├── components/             # Core logic + UI + visualizations
+│   │
+│   ├── sidebar.py
+│   ├── shared.py
+│   ├── results_loader.py
+│   │
+│   ├── charts/             # All visualization modules
+│   │   ├── lap_time.py
+│   │   ├── pit_stops.py
+│   │   ├── position_flow.py
+│   │   ├── racing_line.py
+│   │   ├── telemetry.py
+│   │   ├── tyre_deg.py
+│   │   └── ...
+│
+└── preload.py              # (optional) data preloading script
