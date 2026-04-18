@@ -669,8 +669,52 @@ def sync_driver_selection(selected):
     return selected or []
 
 
-# Tab switch
-@app.callback(
+TAB_IDS = [tid for tid, _, _ in TABS]
+
+# Tab switch — clientside so nginx never blocks it
+app.clientside_callback(
+    """
+    function() {
+        var args = Array.prototype.slice.call(arguments);
+        var n_clicks = args.slice(0, args.length - 1);
+        var active = args[args.length - 1];
+        var tab_ids = """
+    + str(TAB_IDS)
+    + """;
+
+        var triggered = window.dash_clientside.callback_context.triggered;
+        if (!triggered || triggered.length === 0) {
+            return window.dash_clientside.no_update;
+        }
+
+        var prop_id = triggered[0].prop_id;
+        var new_tab = prop_id.replace('tab-btn-', '').replace('.n_clicks', '');
+
+        var page_styles = tab_ids.map(function(tid) {
+            return tid === new_tab ? {display: 'block'} : {display: 'none'};
+        });
+
+        var accent = '"""
+    + ACCENT
+    + """';
+        var text = '"""
+    + TEXT
+    + """';
+        var btn_styles = tab_ids.map(function(tid) {
+            var active = tid === new_tab;
+            return {
+                padding: '12px 14px',
+                fontSize: '11px', fontWeight: '700', letterSpacing: '1px',
+                color: active ? text : '#555',
+                background: 'transparent', border: 'none',
+                borderBottom: active ? '2px solid ' + accent : '2px solid transparent',
+                cursor: 'pointer', whiteSpace: 'nowrap'
+            };
+        });
+
+        return [new_tab].concat(page_styles).concat(btn_styles);
+    }
+    """,
     Output("active-tab", "data"),
     *[Output(f"page-{tid}", "style") for tid, _, _ in TABS],
     *[Output(f"tab-btn-{tid}", "style") for tid, _, _ in TABS],
@@ -678,16 +722,6 @@ def sync_driver_selection(selected):
     State("active-tab", "data"),
     prevent_initial_call=True,
 )
-def switch_tab(*args):
-    if not ctx.triggered:
-        raise dash.exceptions.PreventUpdate
-    new_tab = ctx.triggered[0]["prop_id"].split(".")[0].replace("tab-btn-", "")
-    page_styles = [
-        {"display": "block"} if tid == new_tab else {"display": "none"}
-        for tid, _, _ in TABS
-    ]
-    btn_styles = [_tab_style(tid == new_tab) for tid, _, _ in TABS]
-    return [new_tab] + page_styles + btn_styles
 
 
 if __name__ == "__main__":
