@@ -1,0 +1,24 @@
+name: Lint
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install linters
+        run: pip install black==24.4.2 flake8==7.1.0
+
+      - name: black (format check)
+        run: black --check .
+
+      - name: flake8 (style check)
+        run: flake8 .

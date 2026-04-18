@@ -27,15 +27,20 @@ def get_round_number(year, gp_name):
         races = data["MRData"]["RaceTable"]["Races"]
         gp_lower = gp_name.lower()
         for race in races:
-            if (gp_lower in race["raceName"].lower() or
-                gp_lower in race["Circuit"].get("Location",{}).get("country","").lower() or
-                gp_lower in race["Circuit"].get("circuitName","").lower()):
+            if (
+                gp_lower in race["raceName"].lower()
+                or gp_lower
+                in race["Circuit"].get("Location", {}).get("country", "").lower()
+                or gp_lower in race["Circuit"].get("circuitName", "").lower()
+            ):
                 return int(race["round"])
         # Try partial match on circuit location
         for race in races:
-            loc = race["Circuit"].get("Location",{})
-            if (gp_lower in loc.get("locality","").lower() or
-                gp_lower in loc.get("country","").lower()):
+            loc = race["Circuit"].get("Location", {})
+            if (
+                gp_lower in loc.get("locality", "").lower()
+                or gp_lower in loc.get("country", "").lower()
+            ):
                 return int(race["round"])
     except Exception:
         pass
@@ -44,7 +49,7 @@ def get_round_number(year, gp_name):
 
 def fetch_race_results(year, gp_name):
     """
-    
+
     Fetch race results from Jolpica.
     Returns list of dicts with: pos, drv, first, last, team, grid, gap, status
     Returns None if unavailable
@@ -64,8 +69,8 @@ def fetch_race_results(year, gp_name):
 
     rows = []
     for r in race_results:
-        drv  = r["Driver"]
-        code = drv.get("code", drv.get("driverId","???").upper()[:3])
+        drv = r["Driver"]
+        code = drv.get("code", drv.get("driverId", "???").upper()[:3])
 
         # Gap to leader
         pos = int(r.get("position", 99))
@@ -74,7 +79,7 @@ def fetch_race_results(year, gp_name):
         else:
             time_info = r.get("Time", {})
             millis = time_info.get("millis")
-            t_str  = time_info.get("time")
+            t_str = time_info.get("time")
             if t_str:
                 gap = f"+{t_str}"
             elif millis:
@@ -84,16 +89,18 @@ def fetch_race_results(year, gp_name):
             else:
                 gap = r.get("status", "–")  # DNF / Retired / +1 Lap etc.
 
-        rows.append({
-            "pos":    pos,
-            "drv":    code,
-            "first":  drv.get("givenName",""),
-            "last":   drv.get("familyName", code),
-            "team":   r.get("Constructor",{}).get("name","–"),
-            "grid":   int(r.get("grid", 0)) or None,
-            "gap":    gap,
-            "status": r.get("status",""),
-        })
+        rows.append(
+            {
+                "pos": pos,
+                "drv": code,
+                "first": drv.get("givenName", ""),
+                "last": drv.get("familyName", code),
+                "team": r.get("Constructor", {}).get("name", "–"),
+                "grid": int(r.get("grid", 0)) or None,
+                "gap": gap,
+                "status": r.get("status", ""),
+            }
+        )
 
     return sorted(rows, key=lambda x: x["pos"])
 
@@ -118,18 +125,20 @@ def fetch_quali_results(year, gp_name):
 
     rows = []
     for r in quali:
-        drv  = r["Driver"]
-        code = drv.get("code", drv.get("driverId","???").upper()[:3])
-        rows.append({
-            "pos":   int(r.get("position", 99)),
-            "drv":   code,
-            "first": drv.get("givenName",""),
-            "last":  drv.get("familyName", code),
-            "team":  r.get("Constructor",{}).get("name","–"),
-            "q1":    r.get("Q1","–") or "–",
-            "q2":    r.get("Q2","–") or "–",
-            "q3":    r.get("Q3","–") or "–",
-        })
+        drv = r["Driver"]
+        code = drv.get("code", drv.get("driverId", "???").upper()[:3])
+        rows.append(
+            {
+                "pos": int(r.get("position", 99)),
+                "drv": code,
+                "first": drv.get("givenName", ""),
+                "last": drv.get("familyName", code),
+                "team": r.get("Constructor", {}).get("name", "–"),
+                "q1": r.get("Q1", "–") or "–",
+                "q2": r.get("Q2", "–") or "–",
+                "q3": r.get("Q3", "–") or "–",
+            }
+        )
 
     return sorted(rows, key=lambda x: x["pos"])
 
@@ -144,12 +153,12 @@ def build_results_from_laps(session, meta_map):
         return []
 
     final_pos = {}
-    grid_pos  = {}
+    grid_pos = {}
     cum_times = {}
 
     for drv, grp in laps.groupby("Driver"):
         grp_s = grp.sort_values("LapNumber")
-        last  = grp_s[grp_s["Position"].notna()]["Position"]
+        last = grp_s[grp_s["Position"].notna()]["Position"]
         if not last.empty:
             final_pos[drv] = int(last.iloc[-1])
         lap1 = grp_s[grp_s["LapNumber"] == 1]
@@ -159,33 +168,39 @@ def build_results_from_laps(session, meta_map):
         if not valid.empty:
             cum_times[drv] = valid["LapTime"].dt.total_seconds().sum()
 
-    leader = min(final_pos, key=lambda d: final_pos.get(d,99)) if final_pos else None
+    leader = min(final_pos, key=lambda d: final_pos.get(d, 99)) if final_pos else None
     leader_t = cum_times.get(leader, 0)
 
     rows = []
     for drv in sorted(final_pos, key=lambda d: final_pos[d]):
-        pos  = final_pos[drv]
-        meta = meta_map.get(drv, {"color":"#AAAAAA","first":"","last":drv,
-                                    "team":"–","status":""})
+        pos = final_pos[drv]
+        meta = meta_map.get(
+            drv,
+            {"color": "#AAAAAA", "first": "", "last": drv, "team": "–", "status": ""},
+        )
         if pos == 1 or drv == leader:
             gap = "–"
         elif drv in cum_times and leader_t > 0:
             diff = cum_times[drv] - leader_t
-            gap  = f"+{diff:.3f}s" if diff > 0 else "–"
+            gap = f"+{diff:.3f}s" if diff > 0 else "–"
         else:
             gap = "–"
 
-        rows.append({
-            "pos":    pos,
-            "drv":    drv,
-            "first":  meta["first"],
-            "last":   meta["last"],
-            "team":   meta["team"],
-            "color":  meta.get("color","#AAAAAA"),
-            "grid":   grid_pos.get(drv),
-            "gap":    gap,
-            "status": meta.get("status",""),
-            "q1":"–","q2":"–","q3":"–",
-        })
+        rows.append(
+            {
+                "pos": pos,
+                "drv": drv,
+                "first": meta["first"],
+                "last": meta["last"],
+                "team": meta["team"],
+                "color": meta.get("color", "#AAAAAA"),
+                "grid": grid_pos.get(drv),
+                "gap": gap,
+                "status": meta.get("status", ""),
+                "q1": "–",
+                "q2": "–",
+                "q3": "–",
+            }
+        )
 
     return rows
