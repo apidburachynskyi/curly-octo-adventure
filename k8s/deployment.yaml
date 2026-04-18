@@ -32,13 +32,13 @@ spec:
             httpGet:
               path: /health
               port: 8050
-            initialDelaySeconds: 300
-            periodSeconds: 20
+            initialDelaySeconds: 30
+            periodSeconds: 15
             failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /health
               port: 8050
-            initialDelaySeconds: 240
-            periodSeconds: 15
+            initialDelaySeconds: 20
+            periodSeconds: 10
             failureThreshold: 3
