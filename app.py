@@ -653,11 +653,13 @@ def update_gp_options(year):
         past = not race_date or race_date <= today
         if past and first_available is None:
             first_available = r
-        options.append({
-            "label": r if past else f"{r} — {race_date}",
-            "value": r,
-            "disabled": not past,
-        })
+        options.append(
+            {
+                "label": r if past else f"{r} — {race_date}",
+                "value": r,
+                "disabled": not past,
+            }
+        )
     return options, first_available
 
 

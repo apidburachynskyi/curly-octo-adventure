@@ -16,21 +16,61 @@ fastf1.Cache.enable_cache(CACHE_DIR)
 # Available races─
 _FALLBACK_RACES = {
     2026: [
-        "Melbourne", "Shanghai", "Suzuka",
+        "Melbourne",
+        "Shanghai",
+        "Suzuka",
     ],
     2025: [
-        "Melbourne", "Shanghai", "Suzuka", "Sakhir", "Jeddah",
-        "Miami Gardens", "Imola", "Monte Carlo", "Barcelona", "Montreal",
-        "Spielberg", "Silverstone", "Spa-Francorchamps", "Budapest", "Zandvoort",
-        "Monza", "Baku", "Marina Bay", "Austin", "Mexico City",
-        "São Paulo", "Las Vegas", "Lusail", "Yas Marina",
+        "Melbourne",
+        "Shanghai",
+        "Suzuka",
+        "Sakhir",
+        "Jeddah",
+        "Miami Gardens",
+        "Imola",
+        "Monte Carlo",
+        "Barcelona",
+        "Montreal",
+        "Spielberg",
+        "Silverstone",
+        "Spa-Francorchamps",
+        "Budapest",
+        "Zandvoort",
+        "Monza",
+        "Baku",
+        "Marina Bay",
+        "Austin",
+        "Mexico City",
+        "São Paulo",
+        "Las Vegas",
+        "Lusail",
+        "Yas Marina",
     ],
     2024: [
-        "Sakhir", "Jeddah", "Melbourne", "Suzuka", "Shanghai",
-        "Miami Gardens", "Imola", "Monte Carlo", "Montreal", "Barcelona",
-        "Spielberg", "Silverstone", "Budapest", "Spa-Francorchamps", "Zandvoort",
-        "Monza", "Baku", "Marina Bay", "Austin", "Mexico City",
-        "São Paulo", "Las Vegas", "Lusail", "Yas Marina",
+        "Sakhir",
+        "Jeddah",
+        "Melbourne",
+        "Suzuka",
+        "Shanghai",
+        "Miami Gardens",
+        "Imola",
+        "Monte Carlo",
+        "Montreal",
+        "Barcelona",
+        "Spielberg",
+        "Silverstone",
+        "Budapest",
+        "Spa-Francorchamps",
+        "Zandvoort",
+        "Monza",
+        "Baku",
+        "Marina Bay",
+        "Austin",
+        "Mexico City",
+        "São Paulo",
+        "Las Vegas",
+        "Lusail",
+        "Yas Marina",
     ],
 }
 
@@ -46,6 +86,7 @@ def _load_races() -> tuple[dict, dict]:
     if races_json.exists():
         try:
             import json as _json
+
             raw = _json.loads(races_json.read_text())
             races, dates = {}, {}
             for k, entries in raw.items():

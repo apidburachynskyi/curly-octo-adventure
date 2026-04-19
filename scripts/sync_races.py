@@ -54,7 +54,9 @@ def upload_cache_to_s3():
     key_id = os.environ.get("AWS_ACCESS_KEY_ID")
     secret = os.environ.get("AWS_SECRET_ACCESS_KEY")
     if not key_id or not secret:
-        print("[S3] No credentials found (AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY), skipping upload.")
+        print(
+            "[S3] No credentials found (AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY), skipping upload."
+        )
         return
 
     s3 = boto3.client(
@@ -142,16 +144,17 @@ def main(years: list[int], download: bool = True, upload: bool = True):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--years", nargs="+", type=int, default=SYNC_YEARS,
-        help="Years to sync (default: 2024 2025 2026)"
+        "--years",
+        nargs="+",
+        type=int,
+        default=SYNC_YEARS,
+        help="Years to sync (default: 2024 2025 2026)",
     )
     parser.add_argument(
-        "--no-download", action="store_true",
-        help="Only update races.json, skip session downloads"
+        "--no-download",
+        action="store_true",
+        help="Only update races.json, skip session downloads",
     )
-    parser.add_argument(
-        "--no-upload", action="store_true",
-        help="Skip S3 upload"
-    )
+    parser.add_argument("--no-upload", action="store_true", help="Skip S3 upload")
     args = parser.parse_args()
     main(args.years, download=not args.no_download, upload=not args.no_upload)
