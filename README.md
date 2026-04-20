@@ -1,10 +1,76 @@
-**Live site:** https://f1-dashboard.user.lab.sspcloud.fr/
-
 # F1 Telemetry Dashboard
 
-An interactive Formula 1 analytics dashboard built with Dash, FastF1, and Plotly, deployed on SSP Cloud via ArgoCD.
+![Python](https://img.shields.io/badge/python-3.11-blue)
+![Dash](https://img.shields.io/badge/Dash-dashboard-0b7285)
+![FastF1](https://img.shields.io/badge/FastF1-telemetry-e10600)
+![Plotly](https://img.shields.io/badge/Plotly-visualization-3f4f75)
+![Docker](https://img.shields.io/badge/Docker-ready-2496ED)
+![ArgoCD](https://img.shields.io/badge/ArgoCD-deployed-orange)
 
-The goal of this project is to make Formula 1 telemetry data accessible and understandable, without requiring users to work directly with APIs or raw datasets.
+**Live site:** [https://f1-dashboard.user.lab.sspcloud.fr/](https://f1-dashboard.user.lab.sspcloud.fr/)
+
+An interactive Formula 1 analytics dashboard built with **Dash**, **FastF1**, and **Plotly**, deployed on **SSP Cloud** via **ArgoCD**.
+
+This project transforms raw F1 telemetry and race data into an accessible visual interface, allowing users to explore race performance, qualifying sessions, tyre behaviour, lap consistency, pit stop strategy, and championship standings without working directly with APIs or raw datasets.
+
+---
+
+## Overview
+
+Modern Formula 1 generates large volumes of data: speed, throttle, braking, GPS position, lap times, tyre usage, weather conditions, and more. While part of this information is publicly available through tools such as **FastF1**, it is not straightforward to inspect or interpret in a useful way.
+
+This dashboard was built to bridge that gap. It provides an interactive environment for answering questions such as:
+
+- How do drivers approach specific corners?
+- Where do they brake, accelerate, or gain time?
+- How do tyre compounds and stint length affect performance?
+- How consistent are drivers during a race?
+- What impact do pit stops have on race progression?
+
+---
+
+## Main Features
+
+### Overview
+- Race classification and results
+- Weather conditions
+- Fastest lap and safety car information
+
+### Qualifying
+- Q1 / Q2 / Q3 results tables
+- Visual lap time comparison
+
+### Race Replay
+- 2D animated replay using positional data
+- Adjustable playback speed from **0.5× to 4×**
+
+### Corner Analysis
+- Driver racing lines using GPS data
+- Telemetry comparison across drivers
+- Entry, apex, and exit speed metrics
+
+### Lap Analysis
+- Sector time comparison with best-sector highlighting
+- Detailed telemetry including speed, throttle, brake, gear, and RPM
+
+### Race Progression
+- Lap time evolution
+- Position changes during the race
+- Consistency and distribution analysis
+
+### Tyre Analysis
+- Stint breakdown and degradation estimation
+- Lap time evolution by compound and tyre age
+
+### Pit Stops
+- Pit stop timeline
+- Team performance comparison
+- Average, best, and worst stop durations
+
+### Championship
+- Driver standings
+- Constructor standings
+- Season calendar and race results
 
 ---
 
@@ -13,102 +79,67 @@ The goal of this project is to make Formula 1 telemetry data accessible and unde
 ```bash
 pip install -r requirements.txt
 python app.py
-```
 
-Open in browser: http://localhost:8050
-
----
-
-## Project Idea
-
-Modern Formula 1 generates large amounts of telemetry data: speed, throttle, braking, position, tyre usage, and more. While part of this data is publicly available through tools like FastF1, it is not easy to explore or interpret for most users.
-
-This project aims to solve that by providing a complete dashboard that transforms raw data into visual insights, built around questions that naturally arise when watching a race:
-
-- How do drivers approach corners?
-- Where do they brake or accelerate?
-- How much do tyres affect performance?
-- How consistent are drivers during a race?
-- What role do pit stops play?
+Then open [http://localhost:8050](http://localhost:8050).
 
 ---
-
-## Features
-
-### Overview
-- Race results and classification
-- Weather conditions
-- Fastest lap & safety car information
-
-### Qualifying
-- Q1 / Q2 / Q3 results tables
-- Visual lap time comparison
-
-### Race Replay
-- 2D animated replay using positional data
-- Adjustable playback speed (0.5× to 4×)
-
-### Corner Analysis
-- Driver racing lines using GPS data
-- Telemetry comparison (speed, throttle, braking)
-- Entry / apex / exit speed metrics
-
-### Lap Analysis
-- Sector time comparison with best sector highlighting
-- Detailed telemetry (speed, throttle, brake, gear, RPM)
-
-### Race Progression
-- Lap time evolution and position changes
-- Consistency and distribution analysis
-
-### Tyre Analysis
-- Stint breakdown and degradation estimation
-- Lap time evolution per compound and tyre age
-
-### Pit Stops
-- Pit stop timeline and team performance comparison
-- Average, best, and worst stop durations
-
-### Championship
-- Driver and constructor standings
-- Season calendar with race results
-
----
-
 ## Architecture
 
-```
-S3 (MinIO SSP Cloud)
-    │
-    ▼ pod startup (entrypoint.sh)
-FastF1 cache (./cache/)
-    │
-    ▼ user clicks Load
-session_to_store() → dcc.Store → Dash callbacks → Charts
-```
+The application follows this flow:
 
-### Data Pipeline
+- **S3 (MinIO SSP Cloud)** stores the FastF1 cache
+- On **pod startup**, `entrypoint.sh` downloads cached data
+- The app uses the local **FastF1 cache** in `./cache/`
+- When the user clicks **Load**, `session_to_store()` prepares the session data
+- The data is passed into `dcc.Store` and then consumed by Dash callbacks to render charts
 
-1. **Sync** — `scripts/sync_races.py` downloads F1 sessions from the FastF1 API and uploads them to S3 (`mascret/f1-dashboard-cache/`). Currently run manually from VSCode SSP Cloud after each race weekend. The goal is to automate this via a Kubernetes CronJob (every Monday), but SSP Cloud namespace permissions currently prevent creating the required `s3-credentials` secret.
+The application is built around a simple idea: keep heavy race and session data close to the app through caching, then expose a lightweight interactive layer in Dash.
 
-2. **Pod startup** — `entrypoint.sh` downloads the S3 cache in the background before gunicorn starts, so data is ready immediately for users.
+### Data Flow
 
-3. **On demand** — when a user selects a session, `session_to_store()` loads from the local cache (fast) and serializes it to JSON for the Dash store.
+1. **Sync**  
+   `scripts/sync_races.py` downloads Formula 1 sessions through the FastF1 API and uploads the cache to S3 at `mascret/f1-dashboard-cache/`.  
+   At the moment, this process is launched manually from VS Code on SSP Cloud after each race weekend.
 
-4. **Race calendar** — `data/races.json` lists all GPs with dates for 2024/2025/2026. Future races are shown but disabled in the dropdown. Updated by `sync_races.py`.
+2. **Startup**  
+   On pod startup, `entrypoint.sh` downloads the cached data from S3 so that common sessions are already available when users access the dashboard.
 
-### Monitoring
+3. **Session Load**  
+   When the user selects a race, `session_to_store()` loads the relevant session from local cache and serializes it into a format used by Dash callbacks.
 
-A hidden page at `/monitoring` (HTTP Basic Auth) shows tab render times, RAM, and CPU usage.
+4. **Interactive Rendering**  
+   The serialized session data is stored in `dcc.Store`, then consumed by the different analytics pages to generate charts and views dynamically.
 
-- URL: `https://f1-dashboard.user.lab.sspcloud.fr/monitoring`
-- Login: `admin` / `f1admin2026`
+5. **Race Calendar**  
+   `data/races.json` stores the GP calendar for **2024**, **2025**, and **2026**. Future races are displayed in the interface but disabled until data becomes available.
+
+### Planned Improvement
+
+The next step is to automate race cache synchronization through a **Kubernetes CronJob** running every Monday after a race weekend.
+
+At the moment, SSP Cloud namespace permissions prevent creation of the required `s3-credentials` secret, so this automation is not yet enabled.
+
+---
+
+## Monitoring
+
+The application includes a hidden monitoring page protected with HTTP Basic Auth.
+
+It displays:
+
+- tab render times
+- RAM usage
+- CPU usage
+
+**Monitoring URL:** [https://f1-dashboard.user.lab.sspcloud.fr/monitoring](https://f1-dashboard.user.lab.sspcloud.fr/monitoring)
+
+If this repository is public, avoid publishing real credentials directly in the README.
 
 ---
 
 ## Project Structure
 
-```
+```text
 f1-dashboard/
 │
 ├── app.py                  # Main Dash app: app/server setup, Flask routes, cache, callbacks
@@ -155,8 +186,7 @@ f1-dashboard/
 │   ├── pit_stops.py
 │   └── championship.py
 │
-└── k8s/                    # Kubernetes manifests (optional / future GitOps deployment)
+└── k8s/                    # Kubernetes manifests for deployment
     ├── deployment.yaml
     ├── service.yaml
     └── ingress.yaml
-```
