@@ -178,6 +178,9 @@ It displays:
 ## Project Structure
 
 ```text
+## Project Structure
+
+```text
 f1-dashboard/
 │
 ├── app.py                  # Main Dash app: app/server setup, Flask routes, cache, callbacks
@@ -194,37 +197,53 @@ f1-dashboard/
 ├── assets/                 # Static files (CSS, logos, images)
 │
 ├── views/                  # High-level UI builders extracted from app.py
-│   ├── __init__.py
-│   ├── landing.py          # Landing page view
+│   ├── __pycache__/
 │   ├── championship.py     # Championship page wrapper
-│   ├── telemetry.py        # Telemetry dashboard shell + tab definitions
-│   └── root_layout.py      # Global app layout and dcc.Store setup
-│
-├── components/
-│   ├── shared.py           # Shared constants, formatting, session helpers
-│   ├── sidebar.py          # Session selector + driver checklist UI
-│   ├── perf_metrics.py     # Tab render timing / monitoring helpers
-│   ├── results_loader.py   # Race/quali results from Jolpica API
-│   └── charts/             # Visualization modules
-│       ├── lap_time.py
-│       ├── tyre_deg.py
-│       ├── position_flow.py
-│       ├── racing_line.py
-│       ├── telemetry.py
-│       └── pit_stops.py
+│   ├── landing.py          # Landing page view
+│   ├── root_layout.py      # Global app layout and dcc.Store setup
+│   └── telemetry.py        # Telemetry dashboard shell + tab definitions
 │
 ├── pages/                  # One file per analysis page/tab
-│   ├── overview.py
-│   ├── qualifying.py
-│   ├── race_replay.py
+│   ├── __init__.py
+│   ├── championship.py
 │   ├── corner_analysis.py
 │   ├── lap_analysis.py
-│   ├── race_progression.py
-│   ├── tyre_analysis.py
+│   ├── overview.py
 │   ├── pit_stops.py
-│   └── championship.py
+│   ├── qualifying.py
+│   ├── race_progression.py
+│   ├── race_replay.py
+│   └── tyre_analysis.py
+│
+├── components/
+│   ├── __init__.py
+│   ├── monitoring.py       # Monitoring route helpers and HTML rendering
+│   ├── perf_metrics.py     # Tab render timing / monitoring helpers
+│   ├── shared.py           # Shared constants, formatting, session helpers
+│   ├── sidebar.py          # Session selector + driver checklist UI
+│   │
+│   ├── charts/             # Visualization modules
+│   │   ├── __init__.py
+│   │   ├── lap_time.py
+│   │   ├── pit_stops.py
+│   │   ├── position_flow.py
+│   │   ├── race_replay.py
+│   │   ├── racing_line.py
+│   │   ├── telemetry.py
+│   │   └── tyre_deg.py
+│   │
+│   ├── data/               # Data loading / external API helpers
+│   │   ├── jolpica.py
+│   │   ├── results_loader.py
+│   │   └── session_loader.py
+│   │
+│   └── ui/                 # Shared UI and chart styling helpers
+│       ├── hidden_ids.py
+│       ├── plot_theme.py
+│       └── primitives.py
 │
 └── k8s/                    # Kubernetes manifests for deployment
     ├── deployment.yaml
-    ├── service.yaml
-    └── ingress.yaml
+    ├── ingress.yaml
+    └── service.yaml
+```
