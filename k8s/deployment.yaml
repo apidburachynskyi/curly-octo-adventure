@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: f1-dashboard
+  namespace: user-mascret
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: f1-dashboard
+  template:
+    metadata:
+      labels:
+        app: f1-dashboard
+    spec:
+      containers:
+        - name: f1-dashboard
+          image: ghcr.io/nujabest/curly-octo-adventure:latest
+          ports:
+            - containerPort: 8050
+          env:
+            - name: FF1_CACHE_DIR
+              value: /app/cache
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8050
+            initialDelaySeconds: 120
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8050
+            initialDelaySeconds: 90
+            periodSeconds: 10

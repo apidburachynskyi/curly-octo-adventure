@@ -16,104 +16,126 @@ fastf1.Cache.enable_cache(CACHE_DIR)
 # Available races─
 PRELOADED_RACES = {
     2025: ["Bahrain", "Saudi Arabia", "Australia", "Monaco", "Silverstone"],
-    2024: ["Bahrain", "Monaco",       "Silverstone", "Monza", "Abu Dhabi"],
+    2024: ["Bahrain", "Monaco", "Silverstone", "Monza", "Abu Dhabi"],
 }
-AVAILABLE_YEARS    = sorted(PRELOADED_RACES.keys(), reverse=True)
+AVAILABLE_YEARS = sorted(PRELOADED_RACES.keys(), reverse=True)
 AVAILABLE_SESSIONS = [
-    {"label": "Race",       "value": "R"},
+    {"label": "Race", "value": "R"},
     {"label": "Qualifying", "value": "Q"},
 ]
 
 
 # Colors
-BG     = "#08090d"
-BG2    = "#0d0f14"
-BG3    = "#12151c"
-GRID   = "#1a1d24"
-TEXT   = "#e0e0e0"
-MUTED  = "#555555"
+BG = "#08090d"
+BG2 = "#0d0f14"
+BG3 = "#12151c"
+GRID = "#1a1d24"
+TEXT = "#e0e0e0"
+MUTED = "#555555"
 ACCENT = "#e8002d"
-FONT   = "Arial, sans-serif"
+FONT = "Arial, sans-serif"
 
 TYRE_COLORS = {
-    "SOFT":         "#e8002d",
-    "MEDIUM":       "#ffd700",
-    "HARD":         "#f0f0f0",
+    "SOFT": "#e8002d",
+    "MEDIUM": "#ffd700",
+    "HARD": "#f0f0f0",
     "INTERMEDIATE": "#39b54a",
-    "WET":          "#0067ff",
-    "UNKNOWN":      "#888888",
+    "WET": "#0067ff",
+    "UNKNOWN": "#888888",
 }
 
 # Team → logo slug mapping
 TEAM_LOGO = {
-    "mclaren":           "mclaren",
-    "ferrari":           "ferrari",
-    "scuderia ferrari":  "ferrari",
-    "red bull":          "redbull",
-    "red bull racing":   "redbull",
-    "oracle red bull":   "redbull",
-    "mercedes":          "mercedes",
-    "aston martin":      "astonmartin",
-    "aston martin f1":   "astonmartin",
-    "alpine":            "alpine",
-    "alpine f1":         "alpine",
-    "williams":          "williams",
-    "racing bulls":      "racingbulls",
-    "rb":                "racingbulls",
-    "visa cashapp rb":   "racingbulls",
-    "kick sauber":       "sauber",
-    "sauber":            "sauber",
-    "haas":              "haas",
-    "haas f1 team":      "haas",
-    "haas f1":           "haas",
+    "mclaren": "mclaren",
+    "ferrari": "ferrari",
+    "scuderia ferrari": "ferrari",
+    "red bull": "redbull",
+    "red bull racing": "redbull",
+    "oracle red bull": "redbull",
+    "mercedes": "mercedes",
+    "aston martin": "astonmartin",
+    "aston martin f1": "astonmartin",
+    "alpine": "alpine",
+    "alpine f1": "alpine",
+    "williams": "williams",
+    "racing bulls": "racingbulls",
+    "rb": "racingbulls",
+    "visa cashapp rb": "racingbulls",
+    "kick sauber": "sauber",
+    "sauber": "sauber",
+    "haas": "haas",
+    "haas f1 team": "haas",
+    "haas f1": "haas",
     # FastF1 TeamName variants
-    "mclaren f1 team":   "mclaren",
+    "mclaren f1 team": "mclaren",
     "scuderia ferrari hp": "ferrari",
     "oracle red bull racing": "redbull",
     "mercedes-amg petronas": "mercedes",
     "mercedes amg petronas": "mercedes",
     "aston martin aramco": "astonmartin",
     "bt sport alpine f1": "alpine",
-    "williams racing":   "williams",
-    "visa cash app rb":  "racingbulls",
+    "williams racing": "williams",
+    "visa cash app rb": "racingbulls",
     "stake f1 team kick sauber": "sauber",
     "moneygramm haas f1": "haas",
     "moneygram haas f1": "haas",
 }
 
+
 def team_logo_img(team_name, height="16px"):
     """Return an html.Img for the team logo, or None if not found"""
     from dash import html
+
     slug = TEAM_LOGO.get((team_name or "").lower().strip())
     if not slug:
         return None
     return html.Img(
         src=f"/assets/logos/{slug}.svg",
-        style={"height": height, "width": "auto",
-               "opacity": "0.9", "verticalAlign": "middle",
-               "marginRight": "5px"},
+        style={
+            "height": height,
+            "width": "auto",
+            "opacity": "0.9",
+            "verticalAlign": "middle",
+            "marginRight": "5px",
+        },
     )
 
-def chart_theme(height=380, margin_left=56, margin_right=28,
-                margin_top=24, margin_bottom=52):
+
+def chart_theme(
+    height=380, margin_left=56, margin_right=28, margin_top=24, margin_bottom=52
+):
     return dict(
-        paper_bgcolor=BG2, plot_bgcolor="#0a0c11",
+        paper_bgcolor=BG2,
+        plot_bgcolor="#0a0c11",
         font=dict(color="#888", family=FONT, size=10),
         height=height,
-        margin=dict(l=margin_left, r=margin_right,
-                    t=margin_top, b=margin_bottom),
+        margin=dict(l=margin_left, r=margin_right, t=margin_top, b=margin_bottom),
         hovermode="x unified",
-        hoverlabel=dict(bgcolor="#13161e", bordercolor="#252830",
-                        font=dict(color=TEXT, size=11)),
-        legend=dict(bgcolor="rgba(0,0,0,0)", bordercolor="rgba(0,0,0,0)",
-                    font=dict(size=10, color="#aaa"),
-                    orientation="h", x=0, y=1.10),
-        xaxis=dict(gridcolor="#161920", zeroline=False,
-                   tickfont=dict(size=10, color="#666"),
-                   showline=True, linecolor="#1a1d24"),
-        yaxis=dict(gridcolor="#161920", zeroline=False,
-                   tickfont=dict(size=10, color="#666"),
-                   showline=True, linecolor="#1a1d24"),
+        hoverlabel=dict(
+            bgcolor="#13161e", bordercolor="#252830", font=dict(color=TEXT, size=11)
+        ),
+        legend=dict(
+            bgcolor="rgba(0,0,0,0)",
+            bordercolor="rgba(0,0,0,0)",
+            font=dict(size=10, color="#aaa"),
+            orientation="h",
+            x=0,
+            y=1.10,
+        ),
+        xaxis=dict(
+            gridcolor="#161920",
+            zeroline=False,
+            tickfont=dict(size=10, color="#666"),
+            showline=True,
+            linecolor="#1a1d24",
+        ),
+        yaxis=dict(
+            gridcolor="#161920",
+            zeroline=False,
+            tickfont=dict(size=10, color="#666"),
+            showline=True,
+            linecolor="#1a1d24",
+        ),
     )
 
 
@@ -140,8 +162,9 @@ def format_gap(value, is_leader=False):
     try:
         if pd.isna(value):
             return "–"
-        seconds = (value.total_seconds()
-                   if hasattr(value, "total_seconds") else float(value))
+        seconds = (
+            value.total_seconds() if hasattr(value, "total_seconds") else float(value)
+        )
         if math.isnan(seconds) or seconds < 0:
             return "–"
         return f"+{seconds:.3f}s"
@@ -154,8 +177,9 @@ def format_laptime(value):
     try:
         if pd.isna(value):
             return "–"
-        seconds = (value.total_seconds()
-                   if hasattr(value, "total_seconds") else float(value))
+        seconds = (
+            value.total_seconds() if hasattr(value, "total_seconds") else float(value)
+        )
         if math.isnan(seconds) or seconds <= 0:
             return "–"
         minutes = int(seconds // 60)
@@ -169,8 +193,7 @@ def timedelta_to_seconds(value):
     try:
         if pd.isna(value):
             return None
-        s = (value.total_seconds()
-             if hasattr(value, "total_seconds") else float(value))
+        s = value.total_seconds() if hasattr(value, "total_seconds") else float(value)
         return None if math.isnan(s) else s
     except Exception:
         return None
@@ -182,9 +205,9 @@ def get_driver_meta(session, driver_code):
         info = session.get_driver(driver_code)
         return {
             "color": "#" + info.get("TeamColor", "AAAAAA"),
-            "team":  info.get("TeamName", ""),
+            "team": info.get("TeamName", ""),
             "first": info.get("FirstName", ""),
-            "last":  info.get("LastName", driver_code),
+            "last": info.get("LastName", driver_code),
         }
     except Exception:
         return {"color": "#AAAAAA", "team": "", "first": "", "last": driver_code}
@@ -210,6 +233,7 @@ def load_session(year, gp, session_type):
         s = fastf1.get_session(int(year), gp, session_type)
         s.load()
         return s
+
     result = _retry(_load, retries=3, delay=3)
     if result is None:
         raise RuntimeError(f"Could not load {year} {gp} {session_type}")
@@ -241,11 +265,14 @@ def session_to_store(session):
     # Event
     event = session.event
     store["event"] = {
-        "name":    safe_str(event.get("EventName", "")),
+        "name": safe_str(event.get("EventName", "")),
         "country": safe_str(event.get("Country", "")),
         "circuit": safe_str(event.get("Location", "")),
-        "year":    int(event["EventDate"].year)
-                   if hasattr(event.get("EventDate", ""), "year") else 0,
+        "year": (
+            int(event["EventDate"].year)
+            if hasattr(event.get("EventDate", ""), "year")
+            else 0
+        ),
     }
 
     # Weather
@@ -253,14 +280,18 @@ def session_to_store(session):
         wd = _retry(lambda: session.weather_data, retries=2, fallback=None)
         if wd is not None and not wd.empty:
             w = wd.iloc[len(wd) // 2]
+
             def _wv(col):
-                try: return round(float(w[col]), 1)
-                except: return None
+                try:
+                    return round(float(w[col]), 1)
+                except:
+                    return None
+
             store["weather"] = {
-                "air_temp":   _wv("AirTemp"),
+                "air_temp": _wv("AirTemp"),
                 "track_temp": _wv("TrackTemp"),
-                "humidity":   _wv("Humidity"),
-                "wind":       _wv("WindSpeed"),
+                "humidity": _wv("Humidity"),
+                "wind": _wv("WindSpeed"),
             }
         else:
             store["weather"] = {}
@@ -270,32 +301,36 @@ def session_to_store(session):
     # Results Jolpica API first, laps fallback
     try:
         from components.results_loader import (
-            fetch_race_results, fetch_quali_results,
-            build_results_from_laps
+            fetch_race_results,
+            fetch_quali_results,
+            build_results_from_laps,
         )
+
         is_race = store["session_type"] == "Race"
-        res     = _retry(lambda: session.results, retries=2, fallback=None)
+        res = _retry(lambda: session.results, retries=2, fallback=None)
 
         # Build color/name map from FastF1
         meta_map = {}
         if res is not None and not res.empty:
             for _, r in res.iterrows():
-                drv = safe_str(r.get("Abbreviation",""),"")
-                if not drv: continue
-                raw_color = safe_str(r.get("TeamColor","AAAAAA"),"AAAAAA")
-                color = "#" + raw_color.replace("#","").strip()
-                if len(color) != 7: color = "#AAAAAA"
+                drv = safe_str(r.get("Abbreviation", ""), "")
+                if not drv:
+                    continue
+                raw_color = safe_str(r.get("TeamColor", "AAAAAA"), "AAAAAA")
+                color = "#" + raw_color.replace("#", "").strip()
+                if len(color) != 7:
+                    color = "#AAAAAA"
                 meta_map[drv] = {
-                    "color":  color,
-                    "first":  safe_str(r.get("FirstName","")),
-                    "last":   safe_str(r.get("LastName",drv),drv),
-                    "team":   safe_str(r.get("TeamName","–")),
-                    "status": safe_str(r.get("Status","")),
+                    "color": color,
+                    "first": safe_str(r.get("FirstName", "")),
+                    "last": safe_str(r.get("LastName", drv), drv),
+                    "team": safe_str(r.get("TeamName", "–")),
+                    "status": safe_str(r.get("Status", "")),
                 }
 
-        ev   = store["event"]
+        ev = store["event"]
         year = ev.get("year", 0)
-        gp   = ev.get("name","")
+        gp = ev.get("name", "")
 
         if is_race:
             # Jolpica for accurate gap + grid
@@ -307,7 +342,9 @@ def session_to_store(session):
                         row["color"] = meta_map[row["drv"]]["color"]
                     else:
                         row["color"] = "#AAAAAA"
-                    row["q1"] = "–"; row["q2"] = "–"; row["q3"] = "–"
+                    row["q1"] = "–"
+                    row["q2"] = "–"
+                    row["q3"] = "–"
             else:
                 # Fallback: build from laps
                 rows = build_results_from_laps(session, meta_map)
@@ -320,31 +357,40 @@ def session_to_store(session):
                         row["color"] = meta_map[row["drv"]]["color"]
                     else:
                         row["color"] = "#AAAAAA"
-                    row["gap"] = row.get("q3") or row.get("q1","–")
-                    row["grid"] = None; row["status"] = ""
+                    row["gap"] = row.get("q3") or row.get("q1", "–")
+                    row["grid"] = None
+                    row["status"] = ""
             else:
                 # Fallback from session.results ClassifiedPosition
                 rows = []
                 if res is not None and not res.empty:
                     for _, r in res.iterrows():
-                        drv = safe_str(r.get("Abbreviation",""),"")
-                        if not drv: continue
-                        try: pos = int(float(str(r.get("ClassifiedPosition",99))))
-                        except: pos = 99
-                        meta = meta_map.get(drv,{})
-                        rows.append({
-                            "pos":pos,"drv":drv,
-                            "first":meta.get("first",""),
-                            "last":meta.get("last",drv),
-                            "team":meta.get("team","–"),
-                            "color":meta.get("color","#AAAAAA"),
-                            "grid":None,"gap":"–","status":"",
-                            "q1":format_laptime(r.get("Q1")),
-                            "q2":format_laptime(r.get("Q2")),
-                            "q3":format_laptime(r.get("Q3")),
-                        })
+                        drv = safe_str(r.get("Abbreviation", ""), "")
+                        if not drv:
+                            continue
+                        try:
+                            pos = int(float(str(r.get("ClassifiedPosition", 99))))
+                        except:
+                            pos = 99
+                        meta = meta_map.get(drv, {})
+                        rows.append(
+                            {
+                                "pos": pos,
+                                "drv": drv,
+                                "first": meta.get("first", ""),
+                                "last": meta.get("last", drv),
+                                "team": meta.get("team", "–"),
+                                "color": meta.get("color", "#AAAAAA"),
+                                "grid": None,
+                                "gap": "–",
+                                "status": "",
+                                "q1": format_laptime(r.get("Q1")),
+                                "q2": format_laptime(r.get("Q2")),
+                                "q3": format_laptime(r.get("Q3")),
+                            }
+                        )
 
-        store["results"] = sorted(rows, key=lambda x: x.get("pos",99))
+        store["results"] = sorted(rows, key=lambda x: x.get("pos", 99))
     except Exception as e:
         print(f"[results] {e}")
         store["results"] = []
@@ -353,24 +399,34 @@ def session_to_store(session):
     try:
         laps = session.laps.copy()
         laps["LapTimeSec"] = laps["LapTime"].dt.total_seconds()
-        laps["Compound"]   = laps["Compound"].fillna("UNKNOWN").str.upper()
-        laps["TyreLife"]   = laps["TyreLife"].fillna(0).astype(int)
-        laps["Stint"]      = laps["Stint"].fillna(0).astype(int)
+        laps["Compound"] = laps["Compound"].fillna("UNKNOWN").str.upper()
+        laps["TyreLife"] = laps["TyreLife"].fillna(0).astype(int)
+        laps["Stint"] = laps["Stint"].fillna(0).astype(int)
 
-        time_cols = ["Sector1Time", "Sector2Time", "Sector3Time",
-                     "PitInTime", "PitOutTime"]
+        time_cols = [
+            "Sector1Time",
+            "Sector2Time",
+            "Sector3Time",
+            "PitInTime",
+            "PitOutTime",
+        ]
         for col in time_cols:
             if col in laps.columns:
                 laps[col + "Sec"] = laps[col].apply(timedelta_to_seconds)
 
-        keep = (["Driver", "Team", "LapNumber", "LapTimeSec",
-                 "Compound", "TyreLife", "Stint", "Position"]
-                + [c + "Sec" for c in time_cols if c in laps.columns])
+        keep = [
+            "Driver",
+            "Team",
+            "LapNumber",
+            "LapTimeSec",
+            "Compound",
+            "TyreLife",
+            "Stint",
+            "Position",
+        ] + [c + "Sec" for c in time_cols if c in laps.columns]
         keep = [c for c in keep if c in laps.columns]
 
-        store["laps"] = (laps[keep]
-                         .where(pd.notna(laps[keep]), None)
-                         .to_dict("records"))
+        store["laps"] = laps[keep].where(pd.notna(laps[keep]), None).to_dict("records")
     except Exception:
         store["laps"] = []
 
@@ -381,21 +437,30 @@ def session_to_store(session):
             drv = r["drv"]
             if drv not in seen:
                 seen.add(drv)
-                drv_list.append({
-                    "drv":   drv,
-                    "color": r["color"],
-                    "team":  r["team"],
-                    "pos":   r["pos"],
-                    "first": r["first"],
-                    "last":  r["last"],
-                })
+                drv_list.append(
+                    {
+                        "drv": drv,
+                        "color": r["color"],
+                        "team": r["team"],
+                        "pos": r["pos"],
+                        "first": r["first"],
+                        "last": r["last"],
+                    }
+                )
         # Add drivers in laps but not results
         lap_drvs = {l["Driver"] for l in store["laps"]}
         for drv in sorted(lap_drvs - seen):
             meta = get_driver_meta(session, drv)
-            drv_list.append({"drv": drv, "color": meta["color"],
-                              "team": meta["team"], "pos": 99,
-                              "first": meta["first"], "last": meta["last"]})
+            drv_list.append(
+                {
+                    "drv": drv,
+                    "color": meta["color"],
+                    "team": meta["team"],
+                    "pos": 99,
+                    "first": meta["first"],
+                    "last": meta["last"],
+                }
+            )
         store["drivers"] = drv_list
     except Exception:
         store["drivers"] = []
@@ -414,8 +479,10 @@ def session_to_store(session):
         rc = _retry(lambda: session.race_control_messages, retries=2, fallback=None)
         sc = vsc = 0
         if rc is not None and not rc.empty:
-            sc  = len(rc[rc["Message"].str.contains("SAFETY CAR DEPLOYED",         na=False)])
-            vsc = len(rc[rc["Message"].str.contains("VIRTUAL SAFETY CAR DEPLOYED", na=False)])
+            sc = len(rc[rc["Message"].str.contains("SAFETY CAR DEPLOYED", na=False)])
+            vsc = len(
+                rc[rc["Message"].str.contains("VIRTUAL SAFETY CAR DEPLOYED", na=False)]
+            )
         store["race_control"] = {"sc": sc, "vsc": vsc}
     except Exception:
         store["race_control"] = {"sc": 0, "vsc": 0}
@@ -425,7 +492,7 @@ def session_to_store(session):
         fl = _retry(lambda: session.laps.pick_fastest(), retries=2, fallback=None)
         store["fastest_lap"] = {
             "driver": str(fl["Driver"]) if fl is not None else "–",
-            "time":   format_laptime(fl["LapTime"]) if fl is not None else "–",
+            "time": format_laptime(fl["LapTime"]) if fl is not None else "–",
         }
     except Exception:
         store["fastest_lap"] = {"driver": "–", "time": "–"}

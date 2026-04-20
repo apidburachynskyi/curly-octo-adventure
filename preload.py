@@ -20,22 +20,32 @@ fastf1.Cache.enable_cache(CACHE_DIR)
 
 SESSIONS = [
     # 2025
-    (2025, "Bahrain",      "R"), (2025, "Bahrain",      "Q"),
-    (2025, "Saudi Arabia", "R"), (2025, "Saudi Arabia", "Q"),
-    (2025, "Australia",    "R"), (2025, "Australia",    "Q"),
-    (2025, "Monaco",       "R"), (2025, "Monaco",       "Q"),
-    (2025, "Silverstone",  "R"), (2025, "Silverstone",  "Q"),
+    (2025, "Bahrain", "R"),
+    (2025, "Bahrain", "Q"),
+    (2025, "Saudi Arabia", "R"),
+    (2025, "Saudi Arabia", "Q"),
+    (2025, "Australia", "R"),
+    (2025, "Australia", "Q"),
+    (2025, "Monaco", "R"),
+    (2025, "Monaco", "Q"),
+    (2025, "Silverstone", "R"),
+    (2025, "Silverstone", "Q"),
     # 2024
-    (2024, "Bahrain",      "R"), (2024, "Bahrain",      "Q"),
-    (2024, "Monaco",       "R"), (2024, "Monaco",       "Q"),
-    (2024, "Silverstone",  "R"), (2024, "Silverstone",  "Q"),
-    (2024, "Monza",        "R"), (2024, "Monza",        "Q"),
-    (2024, "Abu Dhabi",    "R"), (2024, "Abu Dhabi",    "Q"),
+    (2024, "Bahrain", "R"),
+    (2024, "Bahrain", "Q"),
+    (2024, "Monaco", "R"),
+    (2024, "Monaco", "Q"),
+    (2024, "Silverstone", "R"),
+    (2024, "Silverstone", "Q"),
+    (2024, "Monza", "R"),
+    (2024, "Monza", "Q"),
+    (2024, "Abu Dhabi", "R"),
+    (2024, "Abu Dhabi", "Q"),
 ]
 
-total   = len(SESSIONS)
+total = len(SESSIONS)
 success = 0
-failed  = []
+failed = []
 
 print(f"Pre-loading {total} sessions into {CACHE_DIR}\n")
 
