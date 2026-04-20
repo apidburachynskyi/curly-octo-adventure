@@ -3,18 +3,9 @@ import plotly.graph_objects as go
 from dash import html, dcc, Input, Output, callback
 
 from components.perf_metrics import tab_timer
-from components.shared import (
-    BG2,
-    BG3,
-    GRID,
-    TEXT,
-    MUTED,
-    ACCENT,
-    FONT,
-    chart_theme,
-    axis_label,
-    format_laptime,
-)
+from components.core.constants import BG2, BG3, GRID, TEXT, MUTED, ACCENT, FONT
+from components.core.theme import chart_theme, axis_label
+from components.core.formatting import format_laptime
 from components.charts import position_flow
 from components.ui.primitives import section_title
 

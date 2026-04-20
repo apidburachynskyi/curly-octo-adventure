@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from dash import html, dcc, Input, Output, callback
 from components.perf_metrics import tab_timer
-from components.shared import BG2, BG3, GRID, TEXT, MUTED, ACCENT, FONT
+from components.core.constants import BG2, BG3, GRID, TEXT, MUTED, ACCENT, FONT
 from components.data.jolpica import JOLPICA, jolpica_get, get_round_number
 from components.charts.pit_stops import (
     prepare_pit_data,

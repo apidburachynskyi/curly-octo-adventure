@@ -1,6 +1,6 @@
 from dash import html, dcc
-
-from components.shared import ACCENT, GRID, session_to_store, get_cached_session
+from components.core.constants import ACCENT, GRID
+from components.core.sessions import session_to_store, get_cached_session
 
 
 def load_store_pair(year, gp):

@@ -4,16 +4,8 @@ import plotly.graph_objects as go
 from dash import html, dcc, Input, Output, callback, ctx
 
 from components.perf_metrics import tab_timer
-from components.shared import (
-    BG2,
-    BG3,
-    GRID,
-    TEXT,
-    MUTED,
-    ACCENT,
-    FONT,
-    team_logo_img,
-)
+from components.core.constants import BG2, BG3, GRID, TEXT, MUTED, ACCENT, FONT
+from components.core.theme import team_logo_img
 from components.ui.primitives import section_title, table_th, position_badge
 
 # Usefull

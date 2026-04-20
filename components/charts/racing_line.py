@@ -1,13 +1,7 @@
 import plotly.graph_objects as go
 import numpy as np
 from scipy.interpolate import CubicSpline
-from components.shared import (
-    TYRE_COLORS,
-    BG,
-    GRID,
-    TEXT,
-    FONT,
-)
+from components.core.constants import BG, GRID, TEXT, FONT
 
 #  Time-correct resampling
 

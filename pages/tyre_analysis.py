@@ -3,15 +3,7 @@ import pandas as pd
 from dash import html, dcc, Input, Output, callback
 
 from components.perf_metrics import tab_timer
-from components.shared import (
-    TYRE_COLORS,
-    BG2,
-    BG3,
-    GRID,
-    TEXT,
-    MUTED,
-    ACCENT,
-)
+from components.core.constants import TYRE_COLORS, BG2, BG3, GRID, TEXT, MUTED, ACCENT
 from components.charts import lap_time, tyre_deg
 
 # Stint data computation

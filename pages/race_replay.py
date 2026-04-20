@@ -3,15 +3,8 @@ import plotly.graph_objects as go
 from dash import html, dcc, Input, Output, State, callback, clientside_callback
 
 from components.perf_metrics import tab_timer
-from components.shared import (
-    BG2,
-    GRID,
-    TEXT,
-    ACCENT,
-    FONT,
-    get_cached_session,
-    get_driver_meta,
-)
+from components.core.constants import BG2, GRID, TEXT, ACCENT, FONT
+from components.core.sessions import get_cached_session, get_driver_meta
 
 _FRAMES_BY_SPEED = {0.5: 120, 1.0: 60, 2.0: 30, 4.0: 15}
 N_TRACK_PTS = 200  # GPS resample resolution

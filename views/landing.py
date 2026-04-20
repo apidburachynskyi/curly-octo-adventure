@@ -1,5 +1,5 @@
 from dash import html, dcc
-from components.shared import BG2, GRID, TEXT, ACCENT, FONT
+from components.core.constants import BG2, GRID, TEXT, ACCENT, FONT
 from components.ui.hidden_ids import hidden_callback_placeholders
 
 

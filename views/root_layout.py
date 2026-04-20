@@ -1,5 +1,5 @@
 from dash import html, dcc
-from components.shared import FONT
+from components.core.constants import FONT
 from views.landing import landing_page
 
 

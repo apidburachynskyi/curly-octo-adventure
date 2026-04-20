@@ -1,6 +1,6 @@
 import pandas as pd
 import math
-from components.shared import format_laptime, safe_str
+from components.core.formatting import format_laptime, safe_str
 from components.data.jolpica import JOLPICA, jolpica_get, get_round_number
 
 

@@ -1,5 +1,5 @@
 import plotly.graph_objects as go
-from components.shared import FONT
+from components.core.constants import FONT
 from components.ui.plot_theme import base_layout, axis_style
 
 

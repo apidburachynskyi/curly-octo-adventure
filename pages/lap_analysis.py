@@ -2,17 +2,9 @@ import pandas as pd
 from dash import html, dcc, Input, Output, callback
 
 from components.perf_metrics import tab_timer
-from components.shared import (
-    BG2,
-    BG3,
-    GRID,
-    TEXT,
-    MUTED,
-    ACCENT,
-    get_cached_session,
-    get_driver_meta,
-    format_laptime,
-)
+from components.core.constants import BG2, BG3, GRID, TEXT, MUTED, ACCENT
+from components.core.sessions import get_cached_session, get_driver_meta
+from components.core.formatting import format_laptime
 from components.charts.telemetry import build as build_telemetry
 
 # Sector time

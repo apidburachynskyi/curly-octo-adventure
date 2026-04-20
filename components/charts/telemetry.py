@@ -1,7 +1,7 @@
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-from components.shared import FONT, hex_to_rgba
-from components.ui.plot_theme import base_layout
+from components.core.constants import BG2, GRID, TEXT, FONT
+from components.core.formatting import hex_to_rgba
 from components.ui.plot_theme import base_layout, axis_style
 
 _PLOT_BG = "#0a0c11"

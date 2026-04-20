@@ -13,14 +13,9 @@ from views.championship import championship_view
 from views.telemetry import telemetry_view, TABS, _tab_style
 from views.root_layout import build_root_layout
 
-from components.shared import (
-    PRELOADED_RACES,
-    RACE_DATES,
-    GRID,
-    TEXT,
-    ACCENT,
-)
-import components.shared as _shared
+from components.core.constants import PRELOADED_RACES, RACE_DATES, GRID, TEXT, ACCENT
+from components.core.sessions import session_to_store
+import components.core.sessions as _shared
 
 from components.data.session_loader import (
     load_store_pair,

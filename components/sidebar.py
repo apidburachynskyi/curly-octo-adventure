@@ -1,13 +1,5 @@
 from dash import html, dcc
-from components.shared import (
-    AVAILABLE_YEARS,
-    PRELOADED_RACES,
-    BG2,
-    GRID,
-    TEXT,
-    ACCENT,
-    MUTED,
-)
+from components.core.constants import AVAILABLE_YEARS, PRELOADED_RACES, BG2, GRID, TEXT, ACCENT, MUTED
 
 
 def _label(text):

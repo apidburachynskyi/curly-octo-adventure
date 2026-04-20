@@ -8,19 +8,9 @@ from plotly.subplots import make_subplots
 from scipy.interpolate import CubicSpline
 
 from components.perf_metrics import tab_timer
-from components.shared import (
-    TYRE_COLORS,
-    BG2,
-    BG3,
-    GRID,
-    TEXT,
-    MUTED,
-    ACCENT,
-    FONT,
-    get_cached_session,
-    get_driver_meta,
-    hex_to_rgba,
-)
+from components.core.constants import TYRE_COLORS, BG2, BG3, GRID, TEXT, MUTED, ACCENT, FONT
+from components.core.sessions import get_cached_session, get_driver_meta
+from components.core.formatting import hex_to_rgba
 from components.charts.racing_line import build as build_racing_line
 
 MARGIN = 100

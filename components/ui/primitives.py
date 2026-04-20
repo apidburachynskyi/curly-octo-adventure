@@ -1,6 +1,6 @@
 from dash import html
 
-from components.shared import BG3, GRID, TEXT, ACCENT
+from components.core.constants import BG3, GRID, TEXT, ACCENT
 
 
 def section_title(text, accent=ACCENT, margin_bottom="16px", height="18px"):

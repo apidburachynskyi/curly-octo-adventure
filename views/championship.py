@@ -1,6 +1,6 @@
 from dash import html, dcc
 import pages.championship as pg_championship
-from components.shared import BG2, GRID, TEXT, FONT
+from components.core.constants import BG2, GRID, TEXT, FONT
 from components.ui.hidden_ids import hidden_callback_placeholders
 
 

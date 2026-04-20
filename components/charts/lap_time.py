@@ -1,5 +1,6 @@
 import plotly.graph_objects as go
-from components.shared import TYRE_COLORS, FONT
+from components.core.constants import TYRE_COLORS, FONT
+from components.core.formatting import hex_to_rgba
 from components.ui.plot_theme import base_layout, axis_style
 
 

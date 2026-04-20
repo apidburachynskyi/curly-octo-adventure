@@ -1,12 +1,8 @@
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
-from components.shared import (
-    GRID,
-    TEXT,
-    chart_theme,
-    axis_label,
-)
+from components.core.constants import TEXT
+from components.core.theme import chart_theme, axis_label
 from components.ui.plot_theme import base_layout, axis_style
 
 # Data preparation

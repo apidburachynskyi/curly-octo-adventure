@@ -1,6 +1,6 @@
 import plotly.graph_objects as go
 import numpy as np
-from components.shared import BG, GRID, FONT
+from components.core.constants import BG, GRID, FONT
 
 
 def build(driver_telemetry: dict, n_frames: int = 100) -> go.Figure:
@@ -11,7 +11,7 @@ def build(driver_telemetry: dict, n_frames: int = 100) -> go.Figure:
     ref_tel = None
     dlist = []
 
-    # ── Track background (drawn from reference driver's telemetry) ──
+    # Track background (drawn from reference driver's telemetry)
     for drv, data in driver_telemetry.items():
         if ref_tel is None:
             ref_tel = data["tel"]
@@ -64,7 +64,7 @@ def build(driver_telemetry: dict, n_frames: int = 100) -> go.Figure:
         )
     )
 
-    # ── Initial car dots ──────────────────────────────────────
+    # Initial car dots
     n_static = len(fig.data)
     resampled = {}
 
@@ -106,7 +106,7 @@ def build(driver_telemetry: dict, n_frames: int = 100) -> go.Figure:
 
     dot_indices = list(range(n_static, len(fig.data)))
 
-    # ── Animation frames ──────────────────────────────────────
+    # Animation frames
     fig.frames = [
         go.Frame(
             data=[
@@ -165,7 +165,7 @@ def build(driver_telemetry: dict, n_frames: int = 100) -> go.Figure:
         for i in range(n_frames)
     ]
 
-    # ── Axis range ────────────────────────────────────────────
+    # Axis range
     all_x = ref_tel["X"].values
     all_y = ref_tel["Y"].values
     pad = max((all_x.max() - all_x.min()) * 0.08, 20)

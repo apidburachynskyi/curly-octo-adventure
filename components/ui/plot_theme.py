@@ -1,4 +1,4 @@
-from components.shared import FONT, TEXT
+from components.core.constants import FONT, TEXT
 
 PAPER_BG = "#0d0f14"
 PLOT_BG = "#0a0c11"

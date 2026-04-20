@@ -2,7 +2,7 @@ import requests
 import plotly.graph_objects as go
 from dash import html, dcc, Input, Output, callback, ctx
 
-from components.shared import (
+from components.core.constants import (
     BG2,
     BG3,
     GRID,
@@ -10,10 +10,9 @@ from components.shared import (
     MUTED,
     ACCENT,
     FONT,
-    chart_theme,
     AVAILABLE_YEARS,
-    team_logo_img,
 )
+from components.core.theme import chart_theme, team_logo_img
 from components.ui.primitives import section_title, table_th, table_td
 
 JOLPICA_BASE = "https://api.jolpi.ca/ergast/f1"

@@ -9,7 +9,7 @@ import pages.race_progression as pg_progression
 import pages.pit_stops as pg_pitstops
 
 from components.sidebar import build_sidebar
-from components.shared import GRID, TEXT, ACCENT, FONT
+from components.core.constants import GRID, TEXT, ACCENT, FONT
 
 from components.ui.hidden_ids import hidden_callback_placeholders
 

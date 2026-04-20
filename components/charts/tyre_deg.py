@@ -1,6 +1,7 @@
 import plotly.graph_objects as go
 import pandas as pd
-from components.shared import TYRE_COLORS, FONT, hex_to_rgba
+from components.core.constants import TYRE_COLORS, FONT
+from components.core.formatting import hex_to_rgba
 from components.ui.plot_theme import base_layout, axis_style
 
 _PLOT_BG = "#0a0c11"
