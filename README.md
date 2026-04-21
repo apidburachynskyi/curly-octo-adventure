@@ -77,7 +77,7 @@ This dashboard was built to bridge that gap. It provides an interactive environm
 
 ---
 
-## Running Locally (Windows)
+## Running Locally (tested on Windows & Python 3.11.x)
 
 
 
