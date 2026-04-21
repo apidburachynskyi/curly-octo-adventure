@@ -97,7 +97,7 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3. Install dependencies
+### 3. Install dependencies (Python 3.11.x required)
 
 ```bash
 pip install -r requirements.txt
